@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tp 1</title>
+    </head>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <body>
+    <div class="container">
+        <div class="div1" id="div-add">
+            <img usemap="#shapes-map" src="images/Krustytheclown.png" alt="image" class="imgUse">
+            <map name="shapes-map" id="map"></map>
+            <br>
+            <br>
+            <div id="ListAllArea">
+                <label>Liste des aires de la map</label>
+            </div>
+        </div>
+        <div class="div2">
+            <label>Nom de la map</label>
+            <input type="text" id="nomMap"/>
+            <br>
+            <br>
+            <label>id de l'air</label>
+            <input type="text" id="idAir"/>
+            <br>
+            <br>
+            <label>Action</label>
+            <input type="text"/>
+            <br>
+            <br>
+            <label>Type d'air</label>
+            <select name="type" id="type">
+                <option value="">--Choisir un type--</option>
+                <option value="rect">Carre</option>
+                <option value="circle">Cercle</option>
+            </select>
+            <br>
+            <br>
+            <br>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+            <div class='circleBase' id='rotateMode'>
+                <div class="top">
+                    <button id="haut" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                </div>
+
+                <div class="middle">
+                    <button id="gauche" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                    <button id="droite" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                </div>
+
+                <div class="bottom">
+                    <button id="bas" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="pointObjet" id="carre" style="display: block">
+                <label>Point 1</label>
+                <br>
+                X <input type="text" size="1" id="x1"/>
+                Y <input type="text" size="1" id="y1"/>
+                <br>
+                <label>Point 2</label>
+                <br>
+                X <input type="text" size="1" id="x2"/>
+                Y <input type="text" size="1" id="y2"/>
+                <br>
+                <br>
+            </div>
+            <div class="pointObjet" id="cercle" style="display: none">
+                <label>centre</label>
+                <br>
+                X <input type="text" size="1" id="xc1"/>
+                Y <input type="text" size="1" id="yC1"/>
+                <br>
+                <label>Rayon</label>
+                <br>
+                <input type="text" size="1" id="rayon"/>
+                <br>
+                <br>
+            </div>
+            <br>
+            <br>
+            <div>
+                <button id="modifier">Modifier</button>
+                <button id="creer">Créer</button>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
+
+<script>
+    let idArea = 0;
+
+    class objectMap
+    {
+        urlImage;
+        nomMap;
+        objetAreaCarre = [];
+        constructor(urlImage, nomMap, objetAreaCarre)
+        {
+            this.urlImage = urlImage;
+            this.nomMap = nomMap;
+            this.objetAreaCarre = objetAreaCarre;
+        }
+
+        getUrlImage() {
+            return this.urlImage;
+        }
+        getNomMap() {
+            return this.nomMap;
+        }
+        NomMap(nomMap) {
+            this.nomMap = nomMap;
+        }
+        getObjetAreaCarre(id) {
+            let elm;
+            this.objetAreaCarre.forEach(element => {
+                if (parseInt(element.getId()) === parseInt(id))
+                {
+                    elm = element;
+                }
+            });
+            return elm;
+        }
+        addObjetAreaCarre(objectPoint)
+        {
+            this.objetAreaCarre.push(objectPoint);
+            //arrayObjetAreaCarre.push(objectPoint);
+        }
+
+        changeXMap(x, id, t)
+        {
+            this.objetAreaCarre.forEach(element => {
+                if (parseInt(element.getId()) === parseInt(id))
+                {
+                    element.setChangeX(x, t);
+                    console.log(element);
+                }
+            });
+        }
+        changeYMap(y, id, t)
+        {
+            this.objetAreaCarre.forEach(element => {
+                if (parseInt(element.getId()) === parseInt(id))
+                {
+                    element.setChangeY(y, t);
+                    console.log(element);
+                }
+            });
+        }
+
+    }
+
+    class objectAreaCarre
+    {
+        idArea;
+        TypeArea;
+        ensembleObjectPoint = [];
+
+        constructor(idArea, TypeArea, ensembleObjectPoint)
+        {
+            this.idArea = idArea;
+            this.TypeArea = TypeArea;
+            this.ensembleObjectPoint = ensembleObjectPoint;
+        }
+
+        // get getlastId()
+        // {
+        //     return this.idArea;
+        // }
+
+        getId()
+        {
+            return this.idArea;
+        }
+
+        getEnsembleObjectPoint()
+        {
+            return this.ensembleObjectPoint;
+        }
+
+        addEnsembleObjectPoint(objectPoint)
+        {
+            this.ensembleObjectPoint.push(objectPoint);
+        }
+
+        setChangeY(y, t)
+        {
+            this.ensembleObjectPoint.forEach(element => {
+                if(t === 0)
+                {
+                    element[0].changeY(y);
+                    console.log(element[0]);
+                }
+                else
+                {
+                    element[1].changeY(y);
+                    console.log(element[1]);
+                }
+            });
+        }
+        setChangeX(x, t)
+        {
+            this.ensembleObjectPoint.forEach(element => {
+                if(t === 0)
+                {
+                    element[0].changeX(x);
+                    console.log(element[0]);
+                }
+                else
+                {
+                    element[1].changeX(x);
+                    console.log(element[1]);
+                }
+            });
+        }
+
+        TestAfficherObjetDansConsole()
+        {
+            console.log(this);
+        }
+
+    }
+
+    class objectPoint
+    {
+        x;
+        y;
+        constructor(x, y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        getCoordonne()
+        {
+            return this.x + ',' + this.y;
+        }
+
+       changeX(x)
+        {
+            this.x = x;
+        }
+
+        changeY(y)
+        {
+            this.y = y;
+        }
+
+        TestAfficherObjetDansConsole()
+        {
+            console.log(this);
+        }
+    }
+
+
+    $(document).ready(function () {
+        // let nomMap = document.getElementById('nomMap');
+        // console.log(nomMap);
+        let objetmap = new objectMap('images/Krustytheclown.png', 'krusty', []);
+
+        document.getElementById("nomMap").value = "krusty";
+
+        document.getElementById('creer').onclick = function()
+        {
+            var select = document.getElementById("type");
+            var type = select.value;
+            //console.log(type);
+
+            if(type.length != 0)
+            {
+                if(type === "rect")
+                {
+                    //console.log(type);
+
+                    // Point 1
+                    let x1 = document.getElementById("x1");
+                    let y1 = document.getElementById("y1");
+
+                    // point 2
+                    let x2 = document.getElementById("x2");
+                    let y2 = document.getElementById("y2");
+
+                    console.log(x1.value.length);
+
+                    // Si valeur null
+                    if(x1.value.length === 0)
+                    {
+                        x1.value = 0;
+                    }
+                    if(y1.value.length === 0)
+                    {
+                        y1.value = 0;
+                    }
+                    if(x2.value.length === 0)
+                    {
+                        x2.value = 50;
+                    }
+                    if(y2.value.length === 0)
+                    {
+                        y2.value = 50;
+                    }
+
+
+                    let myObjet1 = new objectPoint(x1.value, y1.value);
+                    let myObjet2 = new objectPoint(x2.value, y2.value);
+
+                    let ensembleObjectPoint = [
+                        myObjet1,
+                        myObjet2
+                    ];
+
+                    let myobjectArea = new objectAreaCarre();
+
+                    //console.log( myobjectArea.getEnsembleObjectPoint());
+
+                    myobjectArea.idArea  = idArea += 1;
+                    myobjectArea.TypeArea = type;
+                    myobjectArea.ensembleObjectPoint = [];
+                    myobjectArea.addEnsembleObjectPoint(ensembleObjectPoint);
+                    //idArea += 1;
+
+                    objetmap.addObjetAreaCarre(myobjectArea);
+
+                    //let objetmap2 = new objectMap2('images/Krustytheclown.png', nomMap.value, myobjectArea);
+                    //console.log(objetmap.getObjetAreaCarre());
+                    let map = document.getElementById("map");
+
+                    let area = document.createElement("area");
+                    area.shape = type;
+                    area.coords = x1.value + ',' + y1.value + ',' + x2.value + ',' + y2.value;
+                    area.className = "areaMap";
+                    area.href = "#";
+                    area.id = (idArea).toString();
+
+                    map.appendChild(area);
+
+                    let div = document.getElementById("div-add");
+                    div.appendChild(map);
+
+                    //console.log(objetmap);
+                }
+                else if(type === "circle")
+                {
+
+                }
+            }
+            else
+            {
+                alert('Choisir son type');
+            }
+
+
+
+            $("map[name=shapes-map] area").on('click', function () {
+
+
+                let id = $(this).attr('id');
+                let x1;
+                let x2;
+                let y1;
+                let y2;
+                //console.log(id);
+                document.getElementById('idAir').value = id;
+                //alert($(this).attr('id'));
+
+                //console.log(myobjectArea.ensembleObjectPoint);
+                // var result = myobjectArea.ensembleObjectPoint.filter(obj => {
+                //
+                // })
+                //console.log(objetmap.getObjetAreaCarre(id));
+                let objetAll = objetmap.getObjetAreaCarre(id);
+                getEnsemblePoint();
+
+                console.log(objetmap);
+
+                function getEnsemblePoint()
+                {
+                    objetAll.ensembleObjectPoint.forEach(element => {
+                        x1 = element[0].x;
+                        x2 = element[1].x;
+                        y1 = element[0].y;
+                        y2 = element[1].y;
+                    });
+                }
+
+                function AfficherListeArea()
+                {
+                    var tablearea = document.getElementById('ListAllArea'),
+                        table = document.createElement('table');
+
+                    for (var i = 1; i < 4; i++) {
+                        var tr = document.createElement('tr');
+
+                        tr.appendChild( document.createElement('td') );
+                        tr.appendChild( document.createElement('td') );
+
+                        tr.cells[0].appendChild( document.createTextNode('Text1') )
+                        tr.cells[1].appendChild( document.createTextNode('Text2') );
+
+                        table.appendChild(tr);
+                    }
+
+                    tablearea.appendChild(table);
+                }
+
+                document.getElementById('x1').value = x1;
+                document.getElementById('x2').value = x2;
+                document.getElementById('y1').value = y1;
+                document.getElementById('y2').value = y2;
+
+                document.getElementById('droite').onclick = function()
+                {
+                    getEnsemblePoint();
+
+                    let parseX1 = parseInt(x1);
+                    let parseX2 = parseInt(x2);
+
+                    parseX1 += 1;
+                    parseX2 += 1;
+                    objetmap.changeXMap((parseX1).toString(), id, 0);
+                    objetmap.changeXMap((parseX2).toString(), id, 1);
+                    //objetmap.changeXMap((parseX2).toString(), id);
+                    let area = document.getElementById(id);
+
+                    area.coords = x1 + ',' + y1 + ',' + x2 + ',' + y2;
+
+                    document.getElementById('x1').value = (parseX1).toString();
+                    document.getElementById('x2').value = (parseX2).toString();
+                }
+
+                document.getElementById('gauche').onclick = function()
+                {
+                    let x1;
+                    let x2;
+                    let y1;
+                    let y2;
+
+                    objetAll.ensembleObjectPoint.forEach(element => {
+                        x1 = element[0].x;
+                        x2 = element[1].x;
+                        y1 = element[0].y;
+                        y2 = element[1].y;
+                    });
+
+                    let parseX1 = parseInt(x1);
+                    let parseX2 = parseInt(x2);
+
+                    parseX1 -= 1;
+                    parseX2 -= 1;
+                    objetmap.changeXMap((parseX1).toString(), id, 0);
+                    objetmap.changeXMap((parseX2).toString(), id, 1);
+                    //objetmap.changeXMap((parseX2).toString(), id);
+                    let area = document.getElementById(id);
+
+                    area.coords = x1 + ',' + y1 + ',' + x2 + ',' + y2;
+
+                    document.getElementById('x1').value = (parseX1).toString();
+                    document.getElementById('x2').value = (parseX2).toString();
+                }
+
+                document.getElementById('bas').onclick = function()
+                {
+                    let x1;
+                    let x2;
+                    let y1;
+                    let y2;
+
+                    objetAll.ensembleObjectPoint.forEach(element => {
+                        x1 = element[0].x;
+                        x2 = element[1].x;
+                        y1 = element[0].y;
+                        y2 = element[1].y;
+                    });
+
+                    let parseY1 = parseInt(y1);
+                    let parseY2 = parseInt(y2);
+
+                    parseY1 += 1;
+                    parseY2 += 1;
+                    objetmap.changeYMap((parseY1).toString(), id, 0);
+                    objetmap.changeYMap((parseY2).toString(), id, 1);
+
+                    let area = document.getElementById(id);
+
+                    area.coords = x1 + ',' + y1 + ',' + x2 + ',' + y2;
+
+                    document.getElementById('y1').value = (parseY1).toString();
+                    document.getElementById('y2').value = (parseY2).toString();
+                }
+
+                document.getElementById('haut').onclick = function()
+                {
+                    let x1;
+                    let x2;
+                    let y1;
+                    let y2;
+
+                    objetAll.ensembleObjectPoint.forEach(element => {
+                        x1 = element[0].x;
+                        x2 = element[1].x;
+                        y1 = element[0].y;
+                        y2 = element[1].y;
+                    });
+
+                    let parseY1 = parseInt(y1);
+                    let parseY2 = parseInt(y2);
+
+                    parseY1 -= 1;
+                    parseY2 -= 1;
+                    objetmap.changeYMap((parseY1).toString(), id, 0);
+                    objetmap.changeYMap((parseY2).toString(), id, 1);
+
+                    let area = document.getElementById(id);
+
+                    area.coords = x1 + ',' + y1 + ',' + x2 + ',' + y2;
+
+                    document.getElementById('y1').value = (parseY1).toString();
+                    document.getElementById('y2').value = (parseY2).toString();
+                }
+
+                document.getElementById('modifier').onclick = function()
+                {
+                    // Point 1
+                    let x1 = document.getElementById("x1");
+                    let y1 = document.getElementById("y1");
+
+                    // point 2
+                    let x2 = document.getElementById("x2");
+                    let y2 = document.getElementById("y2");
+
+                    // Si valeur null
+                    if(x1.value.length === 0)
+                    {
+                        x1.value = 0;
+                    }
+                    if(y1.value.length === 0)
+                    {
+                        y1.value = 0;
+                    }
+                    if(x2.value.length === 0)
+                    {
+                        x2.value = 50;
+                    }
+                    if(y2.value.length === 0)
+                    {
+                        y2.value = 50;
+                    }
+
+                    objetmap.changeXMap(x1.value, id, 0);
+                    objetmap.changeXMap(x2.value, id, 1);
+                    objetmap.changeYMap(y1.value, id, 0);
+                    objetmap.changeYMap(y2.value, id, 1);
+
+                    let area = document.getElementById(id);
+                    area.coords = x1.value + ',' + y1.value + ',' + x2.value + ',' + y2.value;
+                }
+            });
+        };
+    });
+
+</script>
